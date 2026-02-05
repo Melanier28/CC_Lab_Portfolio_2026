@@ -241,4 +241,85 @@ main > p:last-child {
   .project-grid {
     gap: 24px;
   }
+   /* =========================
+   HERO SECTION
+========================= */
+.hero {
+  height: 100vh;
+  background:
+    linear-gradient(
+      rgba(10,10,20,0.65),
+      rgba(10,10,20,0.85)
+    ),
+    url("images/hero.jpg"); /* <-- your image */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 40px 60px;
+  color: white;
+}
+
+/* NAV BAR */
+.hero-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-nav .logo {
+  font-weight: bold;
+  letter-spacing: 0.2em;
+}
+
+.hero-nav ul {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.hero-nav a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.hero-nav a:hover {
+  color: white;
+}
+
+/* HERO TEXT */
+.hero-content {
+  max-width: 600px;
+  margin-top: 20vh;
+}
+
+.hero-content .role {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: #aaa;
+}
+
+.hero-content h1 {
+  font-size: clamp(3rem, 6vw, 5rem);
+  margin: 16px 0;
+}
+
+.hero-content p {
+  font-size: 1rem;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+/* DIVIDER LINE */
+.hero-divider {
+  position: absolute;
+  bottom: 40px;
+  left: 60px;
+  right: 60px;
+  height: 1px;
+  background: rgba(255,255,255,0.4);
+}
 }
