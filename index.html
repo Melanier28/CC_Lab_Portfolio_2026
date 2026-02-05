@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <title>My Portfolio</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+
+  <h1 class="site-title">My Portfolio</h1>
+
+  <main>
+
+  <nav>
+
+    <ul>
+
+      <li><a href="index.html">Home</a></li>
+
+      <li><a href="about.html">About</a></li>
+
+      <li><a href="extra.html">Extra</a></li>
+
+    </ul>
+
+  </nav>
+
+
+  <h2>Projects</h2>
+
+<div class="project-grid">
+
+  <a class="project-card fade-up" href="project1.html">
+    <h3>Lost and Found</h3>
+    <p>A seaside-inspired artwork.</p>
+  </a>
+
+  <a class="project-card fade-up" href="project2.html">
+    <h3>Face Generator</h3>
+    <p>A random face generator.</p>
+  </a>
+
+  <a class="project-card fade-up" href="project3.html">
+    <h3>Experimental Clock</h3>
+    <p>Experimentation with a way to visualize the passing of time.</p>
+  </a>
+
+  <a class="project-card fade-up" href="project4.html">
+    <h3>Exquisite Corpse</h3>
+    <p>A design piece exploring composition.</p>
+  </a>
+
+  <a class="project-card fade-up" href="project5.html">
+    <h3>Optical Illusion</h3>
+    <p>A code experiementing with optical illusions.</p>
+  </a>
+
+  <a class="project-card fade-up" href="project6.html">
+      <h3>Data Portrait</h3>
+      <p>An experiment with visualzing collected data.</p>
+  </a>
+
+  <a class="project-card fade-up" href="project7.html">
+      <h3>Autobiographical Game</h3>
+      <p>A game walking through memories of my life.</p>
+  </a>
+
+</div>
+
+  <p>
+
+    Please use the links above to explore my projects and learn more about me.
+
+  </p>
+
+  </main>
+
+  <script>
+const faders = document.querySelectorAll('.fade-up');
+
+const appearOptions = {
+  threshold: 0.2,
+  rootMargin: "0px 0px -50px 0px"
+};
+
+const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+  entries.forEach(entry => {
+    if(!entry.isIntersecting) return;
+    entry.target.classList.add('show');
+    observer.unobserve(entry.target);
+  });
+}, appearOptions);
+
+faders.forEach(fader => {
+  appearOnScroll.observe(fader);
+});
+</script>
+
+</body>
+
+</html>
