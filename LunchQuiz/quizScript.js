@@ -14,6 +14,7 @@ hungerSlider.addEventListener("input", () => {
 
 quizForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  console.log("FORM SUBMITTED");
 
   const hunger = parseInt(hungerSlider.value);
   const fit = document.querySelector('input[name="fit"]:checked')?.value;
