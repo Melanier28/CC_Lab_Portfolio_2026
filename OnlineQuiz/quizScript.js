@@ -109,61 +109,73 @@ window.onload = () => {
     return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
   }
 
-  function loadQuestion() {
-    const q = quizData[currentQuestion];
-    quiz.innerHTML = "";
+function loadQuestion() {
+  const q = quizData[currentQuestion];
+  quiz.innerHTML = "";
 
-    const questionEl = document.createElement("h2");
-    questionEl.innerText = q.question;
-    quiz.appendChild(questionEl);
+  // --- QUESTION TEXT ---
+  const questionEl = document.createElement("h2");
+  questionEl.innerText = q.question;
+  quiz.appendChild(questionEl);
 
-    if (q.img) {
-      const img = document.createElement("img");
-      img.src = q.img;
-      quiz.appendChild(img);
-    }
+  // --- IMAGE WRAPPER (FIX) ---
+  if (q.img) {
+    const imgWrapper = document.createElement("div");
+    imgWrapper.className = "img-wrapper";
 
-    nextBtn.onclick = null;
-    nextBtn.style.display = "none";
+    const img = document.createElement("img");
+    img.src = q.img;
+    img.alt = "question image";
 
-    // ONLY multiple choice now
-    if (q.type === "multiple") {
+    imgWrapper.appendChild(img);
+    quiz.appendChild(imgWrapper);
+  }
 
-      q.options.forEach((opt, index) => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
+  nextBtn.onclick = null;
+  nextBtn.style.display = "none";
 
-        btn.onclick = () => {
-          if (index === q.answer) score++;
-          nextQuestion();
-        };
+  // --- MULTIPLE CHOICE ---
+  if (q.type === "multiple") {
 
-        quiz.appendChild(btn);
-      });
+    const optionsWrapper = document.createElement("div");
+    optionsWrapper.className = "options-wrapper";
 
-    }
+    q.options.forEach((opt, index) => {
+      const btn = document.createElement("button");
+      btn.innerText = opt;
 
-    // fill input questions
-    if (q.type === "fill") {
-
-      const input = document.createElement("input");
-      input.placeholder = "Type your answer...";
-      quiz.appendChild(input);
-
-      nextBtn.style.display = "block";
-
-      nextBtn.onclick = () => {
-        const user = normalize(input.value);
-        const correct = normalize(q.answer);
-
-        if (user.includes(correct)) {
-          score++;
-        }
-
+      btn.onclick = () => {
+        if (index === q.answer) score++;
         nextQuestion();
       };
-    }
+
+      optionsWrapper.appendChild(btn);
+    });
+
+    quiz.appendChild(optionsWrapper);
   }
+
+  // --- FILL INPUT ---
+  if (q.type === "fill") {
+
+    const input = document.createElement("input");
+    input.placeholder = "Type your answer...";
+    quiz.appendChild(input);
+
+    nextBtn.style.display = "block";
+
+    nextBtn.onclick = () => {
+      const user = normalize(input.value);
+      const correct = normalize(q.answer);
+
+      if (user.includes(correct)) {
+        score++;
+      }
+
+      nextQuestion();
+    };
+  }
+}
 
   function nextQuestion() {
     currentQuestion++;
