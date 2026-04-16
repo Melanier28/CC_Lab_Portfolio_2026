@@ -13,22 +13,34 @@ window.onload = () => {
       options: ["Rarely", "Sometimes", "Often", "Constantly"],
       answer: 3
     },
-    {
-      type: "fill",
-      question: "I wish I had a free ______",
-      answer: "bag of chips"
-    },
+{
+  type: "image-mc",
+  question: "I wish I had a free ______",
+  options: [
+    "Bag of chipsuhh",
+    "Burgerrrr",
+    "Matchaaa",
+    "Bag of beans"
+  ],
+  answer: 0
+},
     {
       type: "fill",
       question: "Madame Morrible ___ flip it around _____",
       answer: "mm wicked witch"
     },
-    {
-      type: "image-fill",
-      question: "What does he say here?",
-      img: "justin.jpg",
-      answer: "its not clocking to you"
-    },
+{
+  type: "image-mc",
+  question: "What does he say here?",
+  img: "justin.jpg",
+  options: [
+    "It's not clocking to you",
+    "You're not understanding what I'm saying",
+    "I don't think you're hearing me",
+    "It's giving confused energy"
+  ],
+  answer: 0
+},
     {
       type: "image-mc",
       question: "Pick the correct meme",
@@ -41,18 +53,30 @@ window.onload = () => {
       ],
       answer: 1
     },
-    {
-      type: "image-fill",
-      question: "you're what?",
-      img: "kendall.jpg",
-      answer: "youre cute jeans"
-    },
-    {
-      type: "image-fill",
-      question: "you gotta go in the gym eh, sorry...",
-      img: "nepal.jpg",
-      answer: "nepal"
-    }
+{
+  type: "image-mc",
+  question: "you're what?",
+  img: "kendall.jpg",
+  options: [
+    "You're kinda cute jeans",
+    "You're cute jeans",
+    "You're cute genes",
+    "You're cute, I guess"
+  ],
+  answer: 1
+},
+{
+  type: "image-mc",
+  question: "you gotta go in the gym eh, sorry...",
+  img: "nepal.jpg",
+  options: [
+    "No no please",
+    "Sorry for now girl",
+    "Nepal",
+    "Need more time"
+  ],
+  answer: 2
+}
   ];
 
   let currentQuestion = 0;
