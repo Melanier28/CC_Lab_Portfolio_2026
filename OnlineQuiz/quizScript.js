@@ -13,9 +13,11 @@ window.onload = () => {
       options: ["Rarely", "Sometimes", "Often", "Constantly"],
       answer: 3
     },
+
     {
-      type: "image-mc",
+      type: "multiple",
       question: "I wish I had a free ______",
+      img: null,
       options: [
         "Bag of chipsuhh",
         "Burgerrrr",
@@ -24,13 +26,15 @@ window.onload = () => {
       ],
       answer: 0
     },
+
     {
       type: "fill",
       question: "Madame Morrible ___ flip it around _____",
       answer: "mm wicked witch"
     },
+
     {
-      type: "image-mc",
+      type: "multiple",
       question: "What does he say here?",
       img: "justin.jpg",
       options: [
@@ -41,8 +45,9 @@ window.onload = () => {
       ],
       answer: 0
     },
+
     {
-      type: "image-mc",
+      type: "multiple",
       question: "Pick the correct meme",
       img: "elijah.jpg",
       options: [
@@ -53,8 +58,9 @@ window.onload = () => {
       ],
       answer: 1
     },
+
     {
-      type: "image-mc",
+      type: "multiple",
       question: "you're what?",
       img: "kendall.jpg",
       options: [
@@ -65,8 +71,9 @@ window.onload = () => {
       ],
       answer: 1
     },
+
     {
-      type: "image-mc",
+      type: "multiple",
       question: "you gotta go in the gym eh, sorry...",
       img: "nepal.jpg",
       options: [
@@ -119,8 +126,9 @@ window.onload = () => {
     nextBtn.onclick = null;
     nextBtn.style.display = "none";
 
-    // MULTIPLE CHOICE (includes image-mc)
-    if (q.type === "multiple" || q.type === "image-mc") {
+    // ONLY multiple choice now
+    if (q.type === "multiple") {
+
       q.options.forEach((opt, index) => {
         const btn = document.createElement("button");
         btn.innerText = opt;
@@ -132,10 +140,12 @@ window.onload = () => {
 
         quiz.appendChild(btn);
       });
+
     }
 
-    // TEXT INPUT
-    if (q.type === "fill" || q.type === "image-fill") {
+    // fill input questions
+    if (q.type === "fill") {
+
       const input = document.createElement("input");
       input.placeholder = "Type your answer...";
       quiz.appendChild(input);
@@ -179,7 +189,8 @@ window.onload = () => {
       resultText = "You are chronically online. There is no escape.";
     }
 
-    result.innerText = `Score: ${score}/${quizData.length}\n${resultText}`;
+    result.innerText =
+      `Score: ${score}/${quizData.length}\n${resultText}`;
   }
 
 };
