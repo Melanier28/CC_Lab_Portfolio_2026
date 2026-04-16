@@ -1,3 +1,4 @@
+
 const quizData = [
   {
     type: "multiple",
@@ -58,6 +59,14 @@ let score = 0;
 
 const quiz = document.getElementById("quiz");
 const nextBtn = document.getElementById("nextBtn");
+
+const startBtn = document.getElementById("startBtn");
+
+startBtn.onclick = () => {
+  startBtn.style.display = "none";
+  nextBtn.style.display = "block";
+  loadQuestion();
+};
 
 function normalize(str) {
   return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
@@ -141,4 +150,3 @@ function showResult() {
     `Score: ${score}/${quizData.length}\n${resultText}`;
 }
 
-loadQuestion();
