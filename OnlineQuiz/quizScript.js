@@ -59,9 +59,15 @@ let score = 0;
 const quiz = document.getElementById("quiz");
 const nextBtn = document.getElementById("nextBtn");
 
+function normalize(str) {
+  return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+}
+
 function loadQuestion() {
   const q = quizData[currentQuestion];
   quiz.innerHTML = "";
+
+  nextBtn.style.display = "block";
 
   const questionEl = document.createElement("h2");
   questionEl.innerText = q.question;
@@ -73,7 +79,12 @@ function loadQuestion() {
     quiz.appendChild(img);
   }
 
+  // CLEAR old button behavior
+  nextBtn.onclick = null;
+
   if (q.type === "multiple" || q.type === "image-mc") {
+    nextBtn.style.display = "none";
+
     q.options.forEach((opt, index) => {
       const btn = document.createElement("button");
       btn.innerText = opt;
@@ -91,8 +102,13 @@ function loadQuestion() {
     quiz.appendChild(input);
 
     nextBtn.onclick = () => {
-      const userAnswer = input.value.toLowerCase().trim();
-      if (userAnswer === q.answer) score++;
+      const userAnswer = normalize(input.value);
+      const correctAnswer = normalize(q.answer);
+
+      if (userAnswer.includes(correctAnswer)) {
+        score++;
+      }
+
       nextQuestion();
     };
   }
@@ -122,7 +138,7 @@ function showResult() {
   }
 
   document.getElementById("result").innerText =
-    `Score: ${score}/${quizData.length} \n ${resultText}`;
+    `Score: ${score}/${quizData.length}\n${resultText}`;
 }
 
 loadQuestion();
