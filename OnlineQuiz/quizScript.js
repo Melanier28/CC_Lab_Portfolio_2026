@@ -13,26 +13,17 @@ window.onload = () => {
       options: ["Rarely", "Sometimes", "Often", "Constantly"],
       answer: 3
     },
-
     {
       type: "multiple",
       question: "I wish I had a free ______",
-      img: null,
-      options: [
-        "Bag of chipsuhh",
-        "Burgerrrr",
-        "Matchaaa",
-        "Bag of beans"
-      ],
+      options: ["Bag of chips", "Burger", "Matcha", "Beans"],
       answer: 0
     },
-
     {
       type: "fill",
       question: "Madame Morrible ___ flip it around _____",
       answer: "mm wicked witch"
     },
-
     {
       type: "multiple",
       question: "What does he say here?",
@@ -45,7 +36,6 @@ window.onload = () => {
       ],
       answer: 0
     },
-
     {
       type: "multiple",
       question: "Pick the correct meme",
@@ -58,7 +48,6 @@ window.onload = () => {
       ],
       answer: 1
     },
-
     {
       type: "multiple",
       question: "you're what?",
@@ -71,7 +60,6 @@ window.onload = () => {
       ],
       answer: 1
     },
-
     {
       type: "multiple",
       question: "you gotta go in the gym eh, sorry...",
@@ -94,11 +82,6 @@ window.onload = () => {
   const startBtn = document.getElementById("startBtn");
   const result = document.getElementById("result");
 
-  if (!startBtn || !nextBtn || !quiz) {
-    console.error("Missing HTML elements");
-    return;
-  }
-
   startBtn.onclick = () => {
     startBtn.style.display = "none";
     nextBtn.style.display = "block";
@@ -109,73 +92,95 @@ window.onload = () => {
     return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
   }
 
-function loadQuestion() {
-  const q = quizData[currentQuestion];
-  quiz.innerHTML = "";
+  function showFeedback(isCorrect) {
+    const div = document.createElement("div");
+    div.className = `feedback ${isCorrect ? "correct" : "wrong"}`;
+    div.innerText = isCorrect ? "CORRECT" : "NOPE";
+    document.body.appendChild(div);
 
-  // --- QUESTION TEXT ---
-  const questionEl = document.createElement("h2");
-  questionEl.innerText = q.question;
-  quiz.appendChild(questionEl);
-
-  // --- IMAGE WRAPPER (FIX) ---
-  if (q.img) {
-    const imgWrapper = document.createElement("div");
-    imgWrapper.className = "img-wrapper";
-
-    const img = document.createElement("img");
-    img.src = q.img;
-    img.alt = "question image";
-
-    imgWrapper.appendChild(img);
-    quiz.appendChild(imgWrapper);
+    setTimeout(() => div.remove(), 600);
   }
 
-  nextBtn.onclick = null;
-  nextBtn.style.display = "none";
+  function loadQuestion() {
+    const q = quizData[currentQuestion];
+    quiz.innerHTML = "";
 
-  // --- MULTIPLE CHOICE ---
-  if (q.type === "multiple") {
+    const questionEl = document.createElement("h2");
+    questionEl.innerText = q.question;
+    quiz.appendChild(questionEl);
 
-    const optionsWrapper = document.createElement("div");
-    optionsWrapper.className = "options-wrapper";
+    if (q.img) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "img-wrapper";
 
-    q.options.forEach((opt, index) => {
-      const btn = document.createElement("button");
-      btn.innerText = opt;
+      const img = document.createElement("img");
+      img.src = q.img;
 
-      btn.onclick = () => {
-        if (index === q.answer) score++;
+      wrapper.appendChild(img);
+      quiz.appendChild(wrapper);
+    }
+
+    nextBtn.onclick = null;
+    nextBtn.style.display = "none";
+
+    if (q.type === "multiple") {
+
+      const optionsWrapper = document.createElement("div");
+      optionsWrapper.className = "options-wrapper";
+
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+
+        btn.onclick = () => {
+          const isCorrect = index === q.answer;
+
+          if (isCorrect) score++;
+
+          showFeedback(isCorrect);
+
+          const box = document.getElementById("quiz");
+          box.classList.add("quiz-animate-out");
+
+          setTimeout(() => {
+            nextQuestion();
+            box.classList.remove("quiz-animate-out");
+            box.classList.add("quiz-animate-in");
+
+            setTimeout(() => {
+              box.classList.remove("quiz-animate-in");
+            }, 250);
+
+          }, 200);
+        };
+
+        optionsWrapper.appendChild(btn);
+      });
+
+      quiz.appendChild(optionsWrapper);
+    }
+
+    if (q.type === "fill") {
+
+      const input = document.createElement("input");
+      input.placeholder = "Type your answer...";
+      quiz.appendChild(input);
+
+      nextBtn.style.display = "block";
+
+      nextBtn.onclick = () => {
+        const user = normalize(input.value);
+        const correct = normalize(q.answer);
+
+        const isCorrect = user.includes(correct);
+
+        if (isCorrect) score++;
+
+        showFeedback(isCorrect);
         nextQuestion();
       };
-
-      optionsWrapper.appendChild(btn);
-    });
-
-    quiz.appendChild(optionsWrapper);
+    }
   }
-
-  // --- FILL INPUT ---
-  if (q.type === "fill") {
-
-    const input = document.createElement("input");
-    input.placeholder = "Type your answer...";
-    quiz.appendChild(input);
-
-    nextBtn.style.display = "block";
-
-    nextBtn.onclick = () => {
-      const user = normalize(input.value);
-      const correct = normalize(q.answer);
-
-      if (user.includes(correct)) {
-        score++;
-      }
-
-      nextQuestion();
-    };
-  }
-}
 
   function nextQuestion() {
     currentQuestion++;
@@ -191,18 +196,14 @@ function loadQuestion() {
     quiz.innerHTML = "";
     nextBtn.style.display = "none";
 
-    let resultText = "";
+    let resultText =
+      score <= 2
+        ? "You are barely online. Respect."
+        : score <= 5
+        ? "You are online… but still functional."
+        : "You are chronically online. There is no escape.";
 
-    if (score <= 2) {
-      resultText = "You are barely online. Respect.";
-    } else if (score <= 5) {
-      resultText = "You are online… but still functional.";
-    } else {
-      resultText = "You are chronically online. There is no escape.";
-    }
-
-    result.innerText =
-      `Score: ${score}/${quizData.length}\n${resultText}`;
+    result.innerText = `Score: ${score}/${quizData.length}\n${resultText}`;
   }
 
 };
