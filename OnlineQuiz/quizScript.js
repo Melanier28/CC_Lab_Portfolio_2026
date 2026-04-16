@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+window.onload = () => {
 
   const quizData = [
     {
@@ -61,6 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const quiz = document.getElementById("quiz");
   const nextBtn = document.getElementById("nextBtn");
   const startBtn = document.getElementById("startBtn");
+  const result = document.getElementById("result");
+
+  // safety check (prevents silent crashes)
+  if (!startBtn || !nextBtn || !quiz) {
+    console.error("Missing HTML elements. Check your IDs.");
+    return;
+  }
 
   startBtn.onclick = () => {
     startBtn.style.display = "none";
@@ -86,32 +93,38 @@ document.addEventListener("DOMContentLoaded", () => {
       quiz.appendChild(img);
     }
 
+    // reset next button every time
     nextBtn.onclick = null;
+    nextBtn.style.display = "none";
 
+    // MULTIPLE CHOICE
     if (q.type === "multiple" || q.type === "image-mc") {
-      nextBtn.style.display = "none";
-
       q.options.forEach((opt, index) => {
         const btn = document.createElement("button");
         btn.innerText = opt;
+
         btn.onclick = () => {
           if (index === q.answer) score++;
           nextQuestion();
         };
+
         quiz.appendChild(btn);
       });
     }
 
+    // TEXT INPUT
     if (q.type === "fill" || q.type === "image-fill") {
       const input = document.createElement("input");
       input.placeholder = "Type your answer...";
       quiz.appendChild(input);
 
-      nextBtn.onclick = () => {
-        const userAnswer = normalize(input.value);
-        const correctAnswer = normalize(q.answer);
+      nextBtn.style.display = "block";
 
-        if (userAnswer.includes(correctAnswer)) {
+      nextBtn.onclick = () => {
+        const user = normalize(input.value);
+        const correct = normalize(q.answer);
+
+        if (user.includes(correct)) {
           score++;
         }
 
@@ -122,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function nextQuestion() {
     currentQuestion++;
+
     if (currentQuestion < quizData.length) {
       loadQuestion();
     } else {
@@ -143,8 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
       resultText = "You are chronically online. There is no escape.";
     }
 
-    document.getElementById("result").innerText =
-      `Score: ${score}/${quizData.length}\n${resultText}`;
+    result.innerText = `Score: ${score}/${quizData.length}\n${resultText}`;
   }
 
-});
+};
